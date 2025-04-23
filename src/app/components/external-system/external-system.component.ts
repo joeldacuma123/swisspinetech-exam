@@ -4,6 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { HeaderComponent } from '../header/header.component';
 
 interface ExternalSystem {
@@ -20,6 +22,8 @@ interface ExternalSystem {
     MatExpansionModule,
     MatButtonModule,
     MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
     HeaderComponent
   ],
   templateUrl: './external-system.component.html',
@@ -47,25 +51,5 @@ export class ExternalSystemComponent implements OnInit {
   createNewSystem() {
     // Implement create new system dialog
     console.log('Create new system clicked');
-  }
-
-  copySystem(system: ExternalSystem) {
-    console.log('Copy system:', system);
-  }
-
-  makeDefault(system: ExternalSystem) {
-    this.systems = this.systems.map(s => ({
-      ...s,
-      isDefault: s === system
-    }));
-    this.filteredSystems = [...this.systems];
-  }
-
-  deleteSystem(system: ExternalSystem) {
-    const index = this.systems.indexOf(system);
-    if (index > -1) {
-      this.systems.splice(index, 1);
-      this.filteredSystems = [...this.systems];
-    }
   }
 }

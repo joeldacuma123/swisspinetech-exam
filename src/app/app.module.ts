@@ -12,11 +12,13 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { ExternalSystemComponent } from './components/external-system/external-system.component';
+import { SidemenuComponent } from './components/sidemenu/sidemenu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ExternalSystemComponent
+    ExternalSystemComponent,
+    SidemenuComponent
   ],
   imports: [
     BrowserModule,

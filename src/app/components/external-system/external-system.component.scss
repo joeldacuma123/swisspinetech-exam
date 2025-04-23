@@ -18,19 +18,49 @@
         padding: 16px 0;
       }
 
-      mat-action-row {
-        padding: 16px 24px;
-        border-top: 1px solid rgba(0, 0, 0, 0.12);
+      .system-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        padding: 16px;
+      }
 
-        button {
-          margin-left: 8px;
+      .system-field {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        gap: 16px;
 
-          mat-icon {
-            margin-right: 4px;
-          }
-
-          &.active {
-            background-color: rgba(0, 0, 0, 0.04);
+        .input-field {
+          width: 300px;
+    
+          ::ng-deep {
+            .mat-mdc-form-field-flex {
+              background-color: transparent;
+            }
+    
+            .mat-mdc-text-field-wrapper {
+              background-color: transparent;
+              padding: 0;
+              border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+            }
+    
+            .mdc-notched-outline {
+              display: none;
+            }
+    
+            .mat-mdc-form-field-infix {
+              padding: 8px 0;
+            }
+    
+            .mat-mdc-text-field-wrapper:hover {
+              border-bottom: 2px solid rgba(0, 0, 0, 0.38);
+            }
+    
+            .mdc-text-field--focused .mat-mdc-text-field-wrapper {
+              border-bottom: 2px solid var(--mdc-theme-primary, #673ab7);
+            }
           }
         }
       }

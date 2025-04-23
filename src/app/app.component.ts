@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ExternalSystemComponent } from './components/external-system/external-system.component';
+import { SidemenuComponent } from './components/sidemenu/sidemenu.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ExternalSystemComponent],
+  imports: [RouterOutlet, SidemenuComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

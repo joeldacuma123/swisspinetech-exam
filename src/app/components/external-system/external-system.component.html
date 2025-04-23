@@ -11,27 +11,22 @@
           <mat-panel-title>
             {{ system.name }}
           </mat-panel-title>
+          <div class="system-actions">
+            <mat-icon>content_copy</mat-icon>
+            <mat-icon>delete</mat-icon>
+          </div>
         </mat-expansion-panel-header>
   
         <div class="system-content">
-          <!-- Add your system content here -->
-          <p>System details and configuration options will go here</p>
+          <div class="system-field">
+            <mat-label>Name</mat-label>
+            <mat-form-field appearance="outline" class="input-field">
+              <input matInput type="text" />
+            </mat-form-field>
+          </div>
+          
         </div>
-  
-        <mat-action-row>
-          <button mat-button color="primary" (click)="copySystem(system)">
-            <mat-icon>content_copy</mat-icon>
-            Copy
-          </button>
-          <button mat-button color="accent" (click)="makeDefault(system)" [class.active]="system.isDefault">
-            <mat-icon>star</mat-icon>
-            Make Default
-          </button>
-          <button mat-button color="warn" (click)="deleteSystem(system)">
-            <mat-icon>delete</mat-icon>
-            Delete
-          </button>
-        </mat-action-row>
+        
       </mat-expansion-panel>
     </mat-accordion>
   </div>
