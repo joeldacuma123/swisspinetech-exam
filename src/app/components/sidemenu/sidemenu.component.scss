@@ -5,8 +5,10 @@
 .sidenav {
   width: 250px;
   background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
   padding: 10px;
+  border-radius: 0px;
+  border: 0.5px solid #e0e0e0;
 }
 
 .sidenav-header {

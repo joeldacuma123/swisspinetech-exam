@@ -29,7 +29,7 @@ import { SidemenuComponent } from './components/sidemenu/sidemenu.component';
     MatIconModule,
     MatInputModule,
     MatFormFieldModule,
-    MatDialogModule
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

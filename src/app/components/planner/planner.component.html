@@ -1,0 +1,158 @@
+<div class="planner-container">
+  <app-header
+    (searchChange)="onSearch($event)"
+    (onCreate)="createNewPlanner()">
+  </app-header>
+
+  <div class="planner-content">
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let planner of filteredPlanners">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ planner.name }}
+          </mat-panel-title>
+          <div class="planner-actions">
+            <mat-icon (click)="copyPlanner(planner)" class="action-icon">content_copy</mat-icon>
+            <mat-icon (click)="deletePlanner(planner)" class="action-icon">delete</mat-icon>
+          </div>
+        </mat-expansion-panel-header>
+  
+        <div class="planner-content">
+          <div class="planner-field">
+            <div class="planner-field-label">
+              <mat-label>Name:</mat-label>
+            </div>
+            <mat-form-field appearance="outline" class="input-field">
+              <input matInput type="text" />
+            </mat-form-field>
+          </div>
+          <div class="planner-field">
+           <div class="planner-field-label">
+            <mat-label>Description:</mat-label>
+           </div>
+           <mat-form-field appearance="outline" class="input-field">
+             <input matInput type="text" />
+            </mat-form-field>  
+          </div>
+
+          <div class="planner-field">
+            <div class="planner-field-label-select">
+              <mat-label>Planner Type:</mat-label>
+            </div>
+            <mat-form-field appearance="outline" class="input-field-select">
+              <mat-select>
+                <mat-option value="type1">Type 1</mat-option>
+                <mat-option value="type2">Type 2</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="planner-field">
+            <div class="planner-field-label-select">
+              <mat-label>External System Config:</mat-label>
+            </div>
+            <mat-form-field appearance="outline" class="input-field-select">
+              <mat-select>
+                <mat-option value="type1">Type 1</mat-option>
+                <mat-option value="type2">Type 2</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="planner-field">
+            <div class="planner-field-label">
+              <mat-label>Funds:</mat-label>
+            </div>
+            <div class="planner-field-container">
+              <button mat-mini-fab class="add-fund-button">
+                <mat-icon>add</mat-icon>
+              </button>
+              <mat-form-field appearance="outline" class="input-field-select">
+                <mat-select>
+                  <mat-option value="type1">Type 1</mat-option>
+                  <mat-option value="type2">Type 2</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="input-field-select">
+                <mat-select>
+                  <mat-option value="type1">Type 1</mat-option>
+                  <mat-option value="type2">Type 2</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="planner-field">
+            <div class="planner-field-label">
+              <mat-label>Trigger:</mat-label>
+            </div>
+            <div class="input-field-checkbox">
+              <mat-checkbox>Sources</mat-checkbox>
+              <mat-checkbox>Runs</mat-checkbox>
+              <mat-checkbox>Reports</mat-checkbox>
+            </div>
+          </div>
+          <div class="planner-field">
+            <div class="planner-field-label">
+              <mat-label>Sources:</mat-label>
+            </div>
+            <div class="planner-field-container">
+              <button mat-mini-fab class="add-fund-button">
+                <mat-icon>add</mat-icon>
+              </button>
+              <button mat-mini-fab class="add-fund-button">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <mat-form-field appearance="outline" class="input-field-select-trigger">
+                <mat-label>Source</mat-label>
+                <mat-select>
+                  <mat-option value="type1">Type 1</mat-option>
+                  <mat-option value="type2">Type 2</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="planner-field">
+            <div class="planner-field-label">
+              <mat-label>Runs:</mat-label>
+            </div>
+            <div class="planner-field-container">
+              <button mat-mini-fab class="add-fund-button">
+                <mat-icon>add</mat-icon>
+              </button>
+              <button mat-mini-fab class="add-fund-button">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <mat-form-field appearance="outline" class="input-field-select-trigger">
+                <mat-label>Source</mat-label>
+                <mat-select>
+                  <mat-option value="type1">Type 1</mat-option>
+                  <mat-option value="type2">Type 2</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="planner-field">
+            <div class="planner-field-label">
+              <mat-label>Reports:</mat-label>
+            </div>
+            <div class="planner-field-container">
+              <button mat-mini-fab class="add-fund-button">
+                <mat-icon>add</mat-icon>
+              </button>
+              <button mat-mini-fab class="add-fund-button">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <mat-form-field appearance="outline" class="input-field-select-trigger">
+                <mat-label>Source</mat-label>
+                <mat-select>
+                  <mat-option value="type1">Type 1</mat-option>
+                  <mat-option value="type2">Type 2</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>

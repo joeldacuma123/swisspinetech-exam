@@ -1,6 +1,3 @@
-node_modules
-.angular
-
 ############################
 # OS X
 ############################
@@ -124,12 +121,11 @@ coverage
 # Strapi
 ############################
 
-server/.env
-server/node_modules
-server/license.txt
-server/exports
-server/.strapi
-server/dist
-server/build
-server/.strapi-updater.json
-server/.strapi-cloud.json
+.env
+license.txt
+exports
+.strapi
+dist
+build
+.strapi-updater.json
+.strapi-cloud.json

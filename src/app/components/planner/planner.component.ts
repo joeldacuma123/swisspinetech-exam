@@ -9,17 +9,18 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { HeaderComponent } from '../header/header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SystemService } from '../../services/system.service';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { HttpClientModule } from '@angular/common/http';
 
-interface ExternalSystem {
+interface Planner {
   name: string;
   isDefault: boolean;
   isExpanded?: boolean;
 }
 
 @Component({
-  selector: 'app-external-system',
+  selector: 'app-planner',
   standalone: true,
   imports: [
     CommonModule,
@@ -32,42 +33,41 @@ interface ExternalSystem {
     HeaderComponent,
     FormsModule,
     ReactiveFormsModule,
+    MatSelectModule,
+    MatCheckboxModule,
     HttpClientModule,
   ],
-  templateUrl: './external-system.component.html',
-  styleUrls: ['./external-system.component.scss']
+  templateUrl: './planner.component.html',
+  styleUrls: ['./planner.component.scss']
 })
-export class ExternalSystemComponent implements OnInit {
-  systemService = inject(SystemService);
-
-  systems: ExternalSystem[] = [
-    { name: 'PrimeEquityPartners', isDefault: false },
-    { name: 'Pauls test setup', isDefault: false }
+export class PlannerComponent implements OnInit {
+  planners: Planner[] = [
+    { name: 'Planner 1', isDefault: false },
+    { name: 'Planner 2', isDefault: false }
   ];
-  filteredSystems: ExternalSystem[] = [];
+  filteredPlanners: Planner[] = [];
 
-  constructor(private dialog: MatDialog) {
-  }
+  constructor(private dialog: MatDialog) {}
 
   ngOnInit() {
-    this.filteredSystems = [...this.systems];
+    this.filteredPlanners = [...this.planners];
   }
 
   onSearch(searchTerm: string) {
-    this.filteredSystems = this.systems.filter(system =>
-      system.name.toLowerCase().includes(searchTerm.toLowerCase())
+    this.filteredPlanners = this.planners.filter(planner =>
+      planner.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }
 
-  createNewSystem() {
-    console.log('Create new system clicked');
+  createNewPlanner() {
+    console.log('Create new planner clicked');
   }
 
-  copySystem(system: ExternalSystem) {
-    console.log('Copy system clicked', system);
+  copyPlanner(planner: Planner) {
+    console.log('Copy planner clicked', planner);
   }
 
-  deleteSystem(system: ExternalSystem) {
-    console.log('Delete system clicked', system);
+  deletePlanner(planner: Planner) {
+    console.log('Delete planner clicked', planner);
   }
 }

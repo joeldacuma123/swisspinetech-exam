@@ -12,19 +12,61 @@
             {{ system.name }}
           </mat-panel-title>
           <div class="system-actions">
-            <mat-icon>content_copy</mat-icon>
-            <mat-icon>delete</mat-icon>
+            <mat-icon (click)="copySystem(system)" class="action-icon">content_copy</mat-icon>
+            <mat-icon (click)="deleteSystem(system)" class="action-icon">delete</mat-icon>
           </div>
         </mat-expansion-panel-header>
   
         <div class="system-content">
           <div class="system-field">
-            <mat-label>Name</mat-label>
+            <div class="system-field-label">
+              <mat-label>Name</mat-label>
+            </div>
             <mat-form-field appearance="outline" class="input-field">
               <input matInput type="text" />
             </mat-form-field>
           </div>
-          
+          <div class="system-field">
+            <div class="system-field-label">
+              <mat-label>Base URL:</mat-label>
+            </div>
+            <mat-form-field appearance="outline" class="input-field">
+              <input matInput type="text" />
+            </mat-form-field>
+          </div>
+          <div class="system-field">
+            <div class="system-field-label">
+              <mat-label>Authentication Method:</mat-label>
+            </div>
+            <mat-form-field appearance="outline" class="input-field">
+              <input matInput type="text" />
+            </mat-form-field>
+          </div>
+          <div class="system-field">
+            <div class="system-field-label">
+              <mat-label>Key:</mat-label>
+            </div>
+            <mat-form-field appearance="outline" class="input-field">
+              <input matInput type="text" />
+            </mat-form-field>
+          </div>
+          <div class="system-field">
+            <div class="system-field-label">
+              <mat-label>Value:</mat-label>
+            </div>
+            <mat-form-field appearance="outline" class="input-field">
+              <input matInput type="text" />
+            </mat-form-field>
+          </div>
+          <div class="system-field">
+            <div class="system-radio-field-label">
+              <mat-label>Authentication Place:</mat-label>
+            </div>
+            <mat-radio-group class="input-field">
+              <mat-radio-button value="query-parameters">Query Parameters</mat-radio-button>
+              <mat-radio-button value="headers">Headers</mat-radio-button>
+            </mat-radio-group>
+          </div>
         </div>
         
       </mat-expansion-panel>
