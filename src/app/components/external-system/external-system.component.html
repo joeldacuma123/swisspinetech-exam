@@ -38,8 +38,12 @@
             <div class="system-field-label">
               <mat-label>Authentication Method:</mat-label>
             </div>
-            <mat-form-field appearance="outline" class="input-field">
-              <input matInput type="text" />
+            <mat-form-field appearance="outline" class="input-field-select">
+              <mat-select>
+                <mat-option *ngFor="let method of authenticationMethods" [value]="method.value">
+                  {{ method.name }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
           <div class="system-field">
@@ -63,8 +67,8 @@
               <mat-label>Authentication Place:</mat-label>
             </div>
             <mat-radio-group class="input-field">
+              <mat-radio-button value="header">Header</mat-radio-button>
               <mat-radio-button value="query-parameters">Query Parameters</mat-radio-button>
-              <mat-radio-button value="headers">Headers</mat-radio-button>
             </mat-radio-group>
           </div>
         </div>

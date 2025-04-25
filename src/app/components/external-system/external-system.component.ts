@@ -11,6 +11,8 @@ import { HeaderComponent } from '../header/header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SystemService } from '../../services/system.service';
 import { HttpClientModule } from '@angular/common/http';
+import { MatSelectModule } from '@angular/material/select';
+import { AUTHENTICATION_METHODS } from '../../constants';
 
 interface ExternalSystem {
   name: string;
@@ -33,11 +35,13 @@ interface ExternalSystem {
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatSelectModule,
   ],
   templateUrl: './external-system.component.html',
   styleUrls: ['./external-system.component.scss']
 })
 export class ExternalSystemComponent implements OnInit {
+  authenticationMethods = AUTHENTICATION_METHODS;
   systemService = inject(SystemService);
 
   systems: ExternalSystem[] = [
