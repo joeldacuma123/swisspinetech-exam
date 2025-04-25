@@ -382,10 +382,7 @@ export interface ApiSystemSystem extends Struct.CollectionTypeSchema {
   };
   attributes: {
     authenticationMethod: Schema.Attribute.String;
-    authenticationPlace: Schema.Attribute.Enumeration<
-      ['Query Parameters', 'Headers']
-    > &
-      Schema.Attribute.DefaultTo<'Headers'>;
+    authenticationPlace: Schema.Attribute.String;
     baseUrl: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

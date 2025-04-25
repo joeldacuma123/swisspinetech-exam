@@ -8,11 +8,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { HeaderComponent } from '../header/header.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { SystemService } from '../../services/system.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSelectModule } from '@angular/material/select';
 import { AUTHENTICATION_METHODS } from '../../constants';
+import { ISystem, ISystemsResponse, SystemForm } from '../../models/system';
 
 interface ExternalSystem {
   name: string;
@@ -41,6 +42,8 @@ interface ExternalSystem {
   styleUrls: ['./external-system.component.scss']
 })
 export class ExternalSystemComponent implements OnInit {
+  formBuilder = inject(FormBuilder);
+  systemForm: FormGroup = this.formBuilder.group(SystemForm);
   authenticationMethods = AUTHENTICATION_METHODS;
   systemService = inject(SystemService);
 
@@ -50,8 +53,7 @@ export class ExternalSystemComponent implements OnInit {
   ];
   filteredSystems: ExternalSystem[] = [];
 
-  constructor(private dialog: MatDialog) {
-  }
+  constructor(private dialog: MatDialog) {}
 
   ngOnInit() {
     this.filteredSystems = [...this.systems];

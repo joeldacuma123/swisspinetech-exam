@@ -27,12 +27,7 @@
       "type": "string"
     },
     "authenticationPlace": {
-      "type": "enumeration",
-      "enum": [
-        "Query Parameters",
-        "Headers"
-      ],
-      "default": "Headers"
+      "type": "string"
     }
   }
 }
