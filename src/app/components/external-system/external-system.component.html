@@ -17,62 +17,66 @@
           </div>
         </mat-expansion-panel-header>
   
-        <div class="system-content">
-          <div class="system-field">
-            <div class="system-field-label">
-              <mat-label>Name</mat-label>
+        <div class="system-content" *ngIf="system.id && systemForms[system.id]">
+          <form [formGroup]="systemForms[system.id]" (ngSubmit)="updateSystem(system.id)">
+            <div class="system-field">
+              <div class="system-field-label">
+                <mat-label>Name</mat-label>
+              </div>
+              <mat-form-field appearance="outline" class="input-field">
+                <input matInput type="text" formControlName="name" />
+              </mat-form-field>
             </div>
-            <mat-form-field appearance="outline" class="input-field">
-              <input matInput type="text" />
-            </mat-form-field>
-          </div>
-          <div class="system-field">
-            <div class="system-field-label">
-              <mat-label>Base URL:</mat-label>
+            <div class="system-field">
+              <div class="system-field-label">
+                <mat-label>Base URL:</mat-label>
+              </div>
+              <mat-form-field appearance="outline" class="input-field">
+                <input matInput type="text" formControlName="baseUrl" />
+              </mat-form-field>
             </div>
-            <mat-form-field appearance="outline" class="input-field">
-              <input matInput type="text" />
-            </mat-form-field>
-          </div>
-          <div class="system-field">
-            <div class="system-field-label">
-              <mat-label>Authentication Method:</mat-label>
+            <div class="system-field">
+              <div class="system-field-label">
+                <mat-label>Authentication Method:</mat-label>
+              </div>
+              <mat-form-field appearance="outline" class="input-field-select">
+                <mat-select formControlName="authenticationMethod">
+                  <mat-option *ngFor="let method of authenticationMethods" [value]="method.value">
+                    {{ method.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
-            <mat-form-field appearance="outline" class="input-field-select">
-              <mat-select>
-                <mat-option *ngFor="let method of authenticationMethods" [value]="method.value">
-                  {{ method.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="system-field">
-            <div class="system-field-label">
-              <mat-label>Key:</mat-label>
+            <div class="system-field">
+              <div class="system-field-label">
+                <mat-label>Key:</mat-label>
+              </div>
+              <mat-form-field appearance="outline" class="input-field">
+                <input matInput type="text" formControlName="key" />
+              </mat-form-field>
             </div>
-            <mat-form-field appearance="outline" class="input-field">
-              <input matInput type="text" />
-            </mat-form-field>
-          </div>
-          <div class="system-field">
-            <div class="system-field-label">
-              <mat-label>Value:</mat-label>
+            <div class="system-field">
+              <div class="system-field-label">
+                <mat-label>Value:</mat-label>
+              </div>
+              <mat-form-field appearance="outline" class="input-field">
+                <input matInput type="text" formControlName="value" />
+              </mat-form-field>
             </div>
-            <mat-form-field appearance="outline" class="input-field">
-              <input matInput type="text" />
-            </mat-form-field>
-          </div>
-          <div class="system-field">
-            <div class="system-radio-field-label">
-              <mat-label>Authentication Place:</mat-label>
+            <div class="system-field">
+              <div class="system-radio-field-label">
+                <mat-label>Authentication Place:</mat-label>
+              </div>
+              <mat-radio-group formControlName="authenticationPlace" class="input-field">
+                <mat-radio-button value="header">Header</mat-radio-button>
+                <mat-radio-button value="query-parameters">Query Parameters</mat-radio-button>
+              </mat-radio-group>
             </div>
-            <mat-radio-group class="input-field">
-              <mat-radio-button value="header">Header</mat-radio-button>
-              <mat-radio-button value="query-parameters">Query Parameters</mat-radio-button>
-            </mat-radio-group>
-          </div>
+            <div class="system-actions">
+              <button mat-button type="submit" [disabled]="!systemForms[system.id].valid">Save Changes</button>
+            </div>
+          </form>
         </div>
-        
       </mat-expansion-panel>
     </mat-accordion>
   </div>
