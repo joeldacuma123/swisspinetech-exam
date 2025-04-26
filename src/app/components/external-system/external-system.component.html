@@ -72,8 +72,14 @@
               <div class="system-field-label">
                 <mat-label>Value:</mat-label>
               </div>
-              <mat-form-field appearance="outline" class="input-field">
-                <input matInput type="text" formControlName="value" placeholder="Enter authentication value" />
+              <ng-container *ngIf="system.id">
+                <div class="value-display">••••••••••••••••</div>
+              </ng-container>
+              <mat-form-field *ngIf="!system.id" appearance="outline" class="input-field">
+                <input matInput 
+                       type="text" 
+                       formControlName="value" 
+                       placeholder="Enter authentication value" />
                 <mat-error *ngIf="systemForms[system.tempId].get('value')?.hasError('required')">
                   Value is required
                 </mat-error>

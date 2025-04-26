@@ -45,6 +45,7 @@ export class ExternalSystemComponent implements OnInit {
   authenticationMethods = AUTHENTICATION_METHODS;
   systemService = inject(SystemService);
   private cdr = inject(ChangeDetectorRef);
+  isLoading = false;
 
   systems: SystemWithTempId[] = [];
   filteredSystems: SystemWithTempId[] = [];
@@ -58,6 +59,7 @@ export class ExternalSystemComponent implements OnInit {
 
   async loadSystems() {
     try {
+      this.isLoading = true;
       const response = await this.systemService.getSystems();
       this.systems = response.data.map((system: ISystem) => ({
         ...system,
@@ -68,6 +70,8 @@ export class ExternalSystemComponent implements OnInit {
       this.cdr.detectChanges();
     } catch (error) {
       console.error('Error loading systems:', error);
+    } finally {
+      this.isLoading = false;
     }
   }
 
