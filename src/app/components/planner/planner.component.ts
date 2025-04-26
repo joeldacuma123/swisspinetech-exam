@@ -7,11 +7,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
-import { HeaderComponent } from '../header/header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { HttpClientModule } from '@angular/common/http';
+import { PlannerHeaderComponent } from '../header/planner-header.component';
 
 interface Planner {
   name: string;
@@ -30,12 +30,12 @@ interface Planner {
     MatFormFieldModule,
     MatInputModule,
     MatRadioModule,
-    HeaderComponent,
     FormsModule,
     ReactiveFormsModule,
     MatSelectModule,
     MatCheckboxModule,
     HttpClientModule,
+    PlannerHeaderComponent,
   ],
   templateUrl: './planner.component.html',
   styleUrls: ['./planner.component.scss']

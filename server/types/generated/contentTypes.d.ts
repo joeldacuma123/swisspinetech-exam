@@ -369,6 +369,45 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiPlannerPlanner extends Struct.CollectionTypeSchema {
+  collectionName: 'planners';
+  info: {
+    description: '';
+    displayName: 'Planner';
+    pluralName: 'planners';
+    singularName: 'planner';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.String;
+    externalSystemConfig: Schema.Attribute.JSON;
+    funds: Schema.Attribute.JSON;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::planner.planner'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    plannerType: Schema.Attribute.Enumeration<
+      ['type-1', 'type-2', 'type-3', 'type-4']
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    reports: Schema.Attribute.JSON;
+    runs: Schema.Attribute.JSON;
+    sources: Schema.Attribute.JSON;
+    trigger: Schema.Attribute.JSON;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiSystemSystem extends Struct.CollectionTypeSchema {
   collectionName: 'systems';
   info: {
@@ -912,6 +951,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::planner.planner': ApiPlannerPlanner;
       'api::system.system': ApiSystemSystem;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

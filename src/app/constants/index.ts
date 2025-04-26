@@ -12,3 +12,22 @@ export const AUTHENTICATION_METHODS = [
         value: 'apiKey',
     },
 ]
+
+export const PLANNER_TYPES = [
+  {
+    name: 'Type 1',
+    value: 'type1',
+  },
+  {
+    name: 'Type 2',
+    value: 'type2',
+  },
+  {
+    name: 'Type 3',
+    value: 'type3',
+  }, 
+  {
+    name: 'Type 4',
+    value: 'type4',
+  },
+]

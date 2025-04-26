@@ -1,0 +1,48 @@
+{
+  "kind": "collectionType",
+  "collectionName": "planners",
+  "info": {
+    "singularName": "planner",
+    "pluralName": "planners",
+    "displayName": "Planner",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "plannerType": {
+      "type": "enumeration",
+      "enum": [
+        "type-1",
+        "type-2",
+        "type-3",
+        "type-4"
+      ]
+    },
+    "externalSystemConfig": {
+      "type": "json"
+    },
+    "funds": {
+      "type": "json"
+    },
+    "trigger": {
+      "type": "json"
+    },
+    "sources": {
+      "type": "json"
+    },
+    "runs": {
+      "type": "json"
+    },
+    "reports": {
+      "type": "json"
+    }
+  }
+}
