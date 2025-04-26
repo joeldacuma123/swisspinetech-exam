@@ -21,4 +21,8 @@ export class SystemService {
   async updateSystem(system: ISystem, documentId: string) {
     return firstValueFrom(this.http.put<any>(`http://localhost:1337/api/systems/${documentId}`, { data: system }));
   }
+
+  async deleteSystem(documentId: string) {
+    return firstValueFrom(this.http.delete<any>(`http://localhost:1337/api/systems/${documentId}`));
+  }
 }

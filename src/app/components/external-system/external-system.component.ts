@@ -161,6 +161,7 @@ export class ExternalSystemComponent implements OnInit {
   }
 
   deleteSystem(system: SystemWithTempId) {
-    console.log('Delete system clicked', system);
+    this.systemService.deleteSystem(system.documentId?.toString() || '');
+    this.loadSystems();
   }
 }

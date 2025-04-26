@@ -5,7 +5,7 @@ import { PlannerComponent } from './components/planner/planner.component';
 export const routes: Routes = [
   { 
     path: '', 
-    redirectTo: 'dashboard', 
+    redirectTo: 'external', 
     pathMatch: 'full' 
   },
   { 
