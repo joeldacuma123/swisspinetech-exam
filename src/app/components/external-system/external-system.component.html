@@ -6,10 +6,10 @@
 
   <div class="external-system-content">
     <mat-accordion>
-      <mat-expansion-panel *ngFor="let system of filteredSystems">
+      <mat-expansion-panel *ngFor="let system of filteredSystems" [expanded]="!system.id">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            {{ system.name }}
+            {{ system.name || 'New System' }}
           </mat-panel-title>
           <div class="system-actions">
             <mat-icon (click)="copySystem(system)" class="action-icon">content_copy</mat-icon>
@@ -17,14 +17,18 @@
           </div>
         </mat-expansion-panel-header>
   
-        <div class="system-content" *ngIf="system.id && systemForms[system.id]">
-          <form [formGroup]="systemForms[system.id]" (ngSubmit)="updateSystem(system.id)">
+        <div class="system-content" *ngIf="systemForms[system.tempId]">
+          <form [formGroup]="systemForms[system.tempId]" 
+                (ngSubmit)="system.id ? updateSystem(system.tempId) : saveNewSystem(system.tempId)">
             <div class="system-field">
               <div class="system-field-label">
                 <mat-label>Name</mat-label>
               </div>
               <mat-form-field appearance="outline" class="input-field">
-                <input matInput type="text" formControlName="name" />
+                <input matInput type="text" formControlName="name" placeholder="Enter system name" />
+                <mat-error *ngIf="systemForms[system.tempId].get('name')?.hasError('required')">
+                  Name is required
+                </mat-error>
               </mat-form-field>
             </div>
             <div class="system-field">
@@ -32,7 +36,10 @@
                 <mat-label>Base URL:</mat-label>
               </div>
               <mat-form-field appearance="outline" class="input-field">
-                <input matInput type="text" formControlName="baseUrl" />
+                <input matInput type="text" formControlName="baseUrl" placeholder="Enter base URL" />
+                <mat-error *ngIf="systemForms[system.tempId].get('baseUrl')?.hasError('required')">
+                  Base URL is required
+                </mat-error>
               </mat-form-field>
             </div>
             <div class="system-field">
@@ -45,6 +52,9 @@
                     {{ method.name }}
                   </mat-option>
                 </mat-select>
+                <mat-error *ngIf="systemForms[system.tempId].get('authenticationMethod')?.hasError('required')">
+                  Authentication method is required
+                </mat-error>
               </mat-form-field>
             </div>
             <div class="system-field">
@@ -52,7 +62,10 @@
                 <mat-label>Key:</mat-label>
               </div>
               <mat-form-field appearance="outline" class="input-field">
-                <input matInput type="text" formControlName="key" />
+                <input matInput type="text" formControlName="key" placeholder="Enter authentication key" />
+                <mat-error *ngIf="systemForms[system.tempId].get('key')?.hasError('required')">
+                  Key is required
+                </mat-error>
               </mat-form-field>
             </div>
             <div class="system-field">
@@ -60,7 +73,10 @@
                 <mat-label>Value:</mat-label>
               </div>
               <mat-form-field appearance="outline" class="input-field">
-                <input matInput type="text" formControlName="value" />
+                <input matInput type="text" formControlName="value" placeholder="Enter authentication value" />
+                <mat-error *ngIf="systemForms[system.tempId].get('value')?.hasError('required')">
+                  Value is required
+                </mat-error>
               </mat-form-field>
             </div>
             <div class="system-field">
@@ -71,9 +87,14 @@
                 <mat-radio-button value="header">Header</mat-radio-button>
                 <mat-radio-button value="query-parameters">Query Parameters</mat-radio-button>
               </mat-radio-group>
+              <mat-error *ngIf="systemForms[system.tempId].get('authenticationPlace')?.hasError('required')">
+                Authentication place is required
+              </mat-error>
             </div>
             <div class="system-actions">
-              <button mat-button type="submit" [disabled]="!systemForms[system.id].valid">Save Changes</button>
+              <button mat-button type="submit" [disabled]="!systemForms[system.tempId].valid">
+                {{ system.id ? 'Save Changes' : 'Create System' }}
+              </button>
             </div>
           </form>
         </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -8,12 +8,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { HeaderComponent } from '../header/header.component';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SystemService } from '../../services/system.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSelectModule } from '@angular/material/select';
 import { AUTHENTICATION_METHODS } from '../../constants';
 import { ISystem, ISystemsResponse, SystemForm } from '../../models/system';
+
+interface SystemWithTempId extends ISystem {
+  tempId: number;
+}
 
 @Component({
   selector: 'app-external-system',
@@ -40,9 +44,10 @@ export class ExternalSystemComponent implements OnInit {
   systemForm: FormGroup = this.formBuilder.group(SystemForm);
   authenticationMethods = AUTHENTICATION_METHODS;
   systemService = inject(SystemService);
+  private cdr = inject(ChangeDetectorRef);
 
-  systems: ISystem[] = [];
-  filteredSystems: ISystem[] = [];
+  systems: SystemWithTempId[] = [];
+  filteredSystems: SystemWithTempId[] = [];
   systemForms: { [key: number]: FormGroup } = {};
 
   constructor(private dialog: MatDialog) {}
@@ -54,9 +59,13 @@ export class ExternalSystemComponent implements OnInit {
   async loadSystems() {
     try {
       const response = await this.systemService.getSystems();
-      this.systems = response.data;
+      this.systems = response.data.map((system: ISystem) => ({
+        ...system,
+        tempId: system.id || Date.now()
+      }));
       this.filteredSystems = [...this.systems];
       this.initializeSystemForms();
+      this.cdr.detectChanges();
     } catch (error) {
       console.error('Error loading systems:', error);
     }
@@ -64,16 +73,14 @@ export class ExternalSystemComponent implements OnInit {
 
   initializeSystemForms() {
     this.systems.forEach(system => {
-      if (system.id) {
-        this.systemForms[system.id] = this.formBuilder.group({
-          name: [system.name],
-          baseUrl: [system.baseUrl],
-          authenticationMethod: [system.authenticationMethod],
-          authenticationPlace: [system.authenticationPlace],
-          key: [system.key],
-          value: [system.value]
-        });
-      }
+      this.systemForms[system.tempId] = this.formBuilder.group({
+        name: [system.name],
+        baseUrl: [system.baseUrl],
+        authenticationMethod: [system.authenticationMethod],
+        authenticationPlace: [system.authenticationPlace],
+        key: [system.key],
+        value: [system.value]
+      });
     });
   }
 
@@ -83,37 +90,73 @@ export class ExternalSystemComponent implements OnInit {
     );
   }
 
-  async createNewSystem() {
-    if (this.systemForm.valid) {
+  createNewSystem() {
+    const tempId = Date.now();
+    const newSystem: SystemWithTempId = {
+      name: '',
+      baseUrl: '',
+      authenticationMethod: this.authenticationMethods[0]?.value || '',
+      authenticationPlace: 'header',
+      key: '',
+      value: '',
+      tempId: tempId
+    };
+    
+    this.systems.push(newSystem);
+    this.filteredSystems = [...this.systems];
+    
+    this.systemForms[tempId] = this.formBuilder.group({
+      name: ['', Validators.required],
+      baseUrl: ['', Validators.required],
+      authenticationMethod: [this.authenticationMethods[0]?.value || '', Validators.required],
+      authenticationPlace: ['header', Validators.required],
+      key: ['', Validators.required],
+      value: ['', Validators.required]
+    });
+    
+    setTimeout(() => {
+      this.cdr.detectChanges();
+    });
+  }
+
+  async saveNewSystem(tempId: number) {
+    const form = this.systemForms[tempId];
+    if (form && form.valid) {
       try {
-        const newSystem = this.systemForm.value;
+        const newSystem = form.value;
         await this.systemService.createSystem(newSystem);
-        await this.loadSystems(); // Reload the systems after creating a new one
-        this.systemForm.reset();
+        await this.loadSystems();
+        delete this.systemForms[tempId];
+        this.cdr.detectChanges();
       } catch (error) {
         console.error('Error creating system:', error);
       }
     }
   }
 
-  async updateSystem(systemId: number) {
-    const form = this.systemForms[systemId];
+  async updateSystem(tempId: number) {
+    const form = this.systemForms[tempId];
     if (form && form.valid) {
       try {
-        const updatedSystem = { ...form.value, id: systemId };
-        await this.systemService.updateSystem(updatedSystem);
-        await this.loadSystems();
+        const system = this.systems.find(s => s.tempId === tempId);
+        if (system?.id) {
+          console.log('Updating system', system);
+          const updatedSystem = { ...form.value };
+          await this.systemService.updateSystem(updatedSystem, system?.documentId?.toString() || '');
+          await this.loadSystems();
+          this.cdr.detectChanges();
+        }
       } catch (error) {
         console.error('Error updating system:', error);
       }
     }
   }
 
-  copySystem(system: ISystem) {
+  copySystem(system: SystemWithTempId) {
     console.log('Copy system clicked', system);
   }
 
-  deleteSystem(system: ISystem) {
+  deleteSystem(system: SystemWithTempId) {
     console.log('Delete system clicked', system);
   }
 }
