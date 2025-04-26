@@ -7,13 +7,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { HeaderComponent } from '../header/header.component';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SystemService } from '../../services/system.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSelectModule } from '@angular/material/select';
 import { AUTHENTICATION_METHODS } from '../../constants';
-import { ISystem, ISystemsResponse, SystemForm } from '../../models/system';
+import { ISystem, SystemForm } from '../../models/system';
 
 interface SystemWithTempId extends ISystem {
   tempId: number;
@@ -51,7 +52,10 @@ export class ExternalSystemComponent implements OnInit {
   filteredSystems: SystemWithTempId[] = [];
   systemForms: { [key: number]: FormGroup } = {};
 
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
+  ) {}
 
   async ngOnInit() {
     await this.loadSystems();
@@ -157,7 +161,30 @@ export class ExternalSystemComponent implements OnInit {
   }
 
   copySystem(system: SystemWithTempId) {
-    console.log('Copy system clicked', system);
+    const systemData = {
+      name: system.name,
+      baseUrl: system.baseUrl,
+      authenticationMethod: system.authenticationMethod,
+      authenticationPlace: system.authenticationPlace,
+      key: system.key,
+      value: system.value
+    };
+    
+    const jsonString = JSON.stringify(systemData, null, 2);
+    navigator.clipboard.writeText(jsonString).then(() => {
+      this.snackBar.open('System data copied to clipboard', 'Close', {
+        duration: 3000,
+        horizontalPosition: 'end',
+        verticalPosition: 'top'
+      });
+    }).catch(err => {
+      this.snackBar.open('Failed to copy system data', 'Close', {
+        duration: 3000,
+        horizontalPosition: 'end',
+        verticalPosition: 'top'
+      });
+      console.error('Failed to copy system data:', err);
+    });
   }
 
   deleteSystem(system: SystemWithTempId) {
