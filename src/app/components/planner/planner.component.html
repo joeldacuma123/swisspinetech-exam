@@ -41,8 +41,9 @@
             </div>
             <mat-form-field appearance="outline" class="input-field-select">
               <mat-select>
-                <mat-option value="type1">Type 1</mat-option>
-                <mat-option value="type2">Type 2</mat-option>
+                <mat-option *ngFor="let type of plannerTypes" [value]="type.value">
+                  {{ type.name }}
+                </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -53,8 +54,7 @@
             </div>
             <mat-form-field appearance="outline" class="input-field-select">
               <mat-select>
-                <mat-option value="type1">Type 1</mat-option>
-                <mat-option value="type2">Type 2</mat-option>
+                <mat-option *ngFor="let system of systems" [value]="system">{{ system.name }}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -68,14 +68,12 @@
               </button>
               <mat-form-field appearance="outline" class="input-field-select">
                 <mat-select>
-                  <mat-option value="type1">Type 1</mat-option>
-                  <mat-option value="type2">Type 2</mat-option>
+                  <mat-option *ngFor="let fund of fundTypes" [value]="fund.value">{{ fund.name }}</mat-option>
                 </mat-select>
               </mat-form-field>
               <mat-form-field appearance="outline" class="input-field-select">
                 <mat-select>
-                  <mat-option value="type1">Type 1</mat-option>
-                  <mat-option value="type2">Type 2</mat-option>
+                  <mat-option *ngFor="let fundAlias of fundAliasTypes" [value]="fundAlias.value">{{ fundAlias.name }}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -104,8 +102,7 @@
               <mat-form-field appearance="outline" class="input-field-select-trigger">
                 <mat-label>Source</mat-label>
                 <mat-select>
-                  <mat-option value="type1">Type 1</mat-option>
-                  <mat-option value="type2">Type 2</mat-option>
+                  <mat-option *ngFor="let source of sourceTypes" [value]="source.value">{{ source.name }}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -122,10 +119,9 @@
                 <mat-icon>delete</mat-icon>
               </button>
               <mat-form-field appearance="outline" class="input-field-select-trigger">
-                <mat-label>Source</mat-label>
+                <mat-label>Run</mat-label>
                 <mat-select>
-                  <mat-option value="type1">Type 1</mat-option>
-                  <mat-option value="type2">Type 2</mat-option>
+                  <mat-option *ngFor="let run of runTypes" [value]="run.value">{{ run.name }}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -142,10 +138,9 @@
                 <mat-icon>delete</mat-icon>
               </button>
               <mat-form-field appearance="outline" class="input-field-select-trigger">
-                <mat-label>Source</mat-label>
+                <mat-label>Report</mat-label>
                 <mat-select>
-                  <mat-option value="type1">Type 1</mat-option>
-                  <mat-option value="type2">Type 2</mat-option>
+                  <mat-option *ngFor="let report of reportTypes" [value]="report.value">{{ report.name }}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>

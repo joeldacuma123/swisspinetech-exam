@@ -12,7 +12,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { HttpClientModule } from '@angular/common/http';
 import { PlannerHeaderComponent } from '../header/planner-header.component';
-
+import { PLANNER_TYPES, FUND_TYPES, FUND_ALIAS_TYPES, SOURCE_TYPES, RUN_TYPES, REPORT_TYPES } from '../../constants';
+import { SystemService } from '../../services/system.service';
+import { ISystem } from '../../models/system';
 interface Planner {
   name: string;
   isDefault: boolean;
@@ -45,12 +47,22 @@ export class PlannerComponent implements OnInit {
     { name: 'Planner 1', isDefault: false },
     { name: 'Planner 2', isDefault: false }
   ];
+  plannerTypes = PLANNER_TYPES;
+  fundTypes = FUND_TYPES;
+  fundAliasTypes = FUND_ALIAS_TYPES;
+  sourceTypes = SOURCE_TYPES;
+  runTypes = RUN_TYPES;
+  reportTypes = REPORT_TYPES;
+  systemService = inject(SystemService);
   filteredPlanners: Planner[] = [];
-
+  systems: ISystem[] = [];
   constructor(private dialog: MatDialog) {}
 
   ngOnInit() {
     this.filteredPlanners = [...this.planners];
+    this.systemService.getSystems().then((systems) => {
+      this.systems = systems.data;
+    });
   }
 
   onSearch(searchTerm: string) {
