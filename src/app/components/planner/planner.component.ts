@@ -333,9 +333,9 @@ export class PlannerComponent implements OnInit {
   }
 
   async updatePlanner(planner: IPlanner) {
-    if (this.plannerForm.valid && planner.id) {
+    if (this.plannerForm.valid && planner.documentId) {
       try {
-        //await this.plannerService.updatePlanner(this.plannerForm.value, planner.id.toString());
+        await this.plannerService.updatePlanner(this.plannerForm.value, planner.documentId.toString());
         await this.loadPlanners();
       } catch (error) {
         console.error('Error updating planner:', error);
@@ -352,5 +352,19 @@ export class PlannerComponent implements OnInit {
 
   deletePlanner(planner: IPlanner) {
     console.log('Delete planner clicked', planner);
+  }
+
+  async submitPlanner(planner: IPlanner) {
+    if (this.plannerForm.valid) {
+      try {
+        if (planner.id) {
+          await this.updatePlanner(planner);
+        } else {
+          await this.saveNewPlanner();
+        }
+      } catch (error) {
+        console.error('Error submitting planner:', error);
+      }
+    }
   }
 }

@@ -148,7 +148,6 @@ export class ExternalSystemComponent implements OnInit {
       try {
         const system = this.systems.find(s => s.tempId === tempId);
         if (system?.id) {
-          console.log('Updating system', system);
           const updatedSystem = { ...form.value };
           await this.systemService.updateSystem(updatedSystem, system?.documentId?.toString() || '');
           await this.loadSystems();

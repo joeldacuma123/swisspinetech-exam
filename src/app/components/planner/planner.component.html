@@ -16,7 +16,7 @@
             {{ planner.name || 'New Planner' }}
           </mat-panel-title>
           <div class="planner-actions">
-            <mat-icon class="action-icon">play_arrow</mat-icon>
+            <mat-icon (click)="submitPlanner(planner)" class="action-icon">play_arrow</mat-icon>
             <mat-icon (click)="copyPlanner(planner)" class="action-icon">content_copy</mat-icon>
             <mat-icon (click)="deletePlanner(planner)" class="action-icon">delete</mat-icon>
           </div>
@@ -184,12 +184,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- <div class="planner-actions">
-              <button mat-button type="submit" [disabled]="!plannerForm.valid">
-                {{ planner.id ? 'Save Changes' : 'Create Planner' }}
-              </button>
-            </div> -->
           </form>
         </div>
       </mat-expansion-panel>
