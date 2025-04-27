@@ -79,7 +79,7 @@
               <div class="planner-field-label">
                 <mat-label>Funds:</mat-label>
               </div>
-              <button mat-mini-fab class="add-fund-button" (click)="addFund()">
+              <button mat-mini-fab class="add-button" (click)="addFund()">
                 <mat-icon>add</mat-icon>
               </button>
               <div class="planner-field-container" formArrayName="funds">
@@ -113,20 +113,19 @@
               </div>
             </div>
 
-            <!-- <div class="planner-field">
+            <div class="planner-field">
               <div class="planner-field-label">
                 <mat-label>Sources:</mat-label>
               </div>
+              <button mat-mini-fab class="add-button" (click)="addSource()">
+                <mat-icon>add</mat-icon>
+              </button>
+              <button mat-mini-fab class="delete-button" (click)="removeSource()">
+                <mat-icon>delete</mat-icon>
+              </button>
               <div class="planner-field-container" formArrayName="sources">
-                <button mat-mini-fab class="add-fund-button" (click)="addSource()">
-                  <mat-icon>add</mat-icon>
-                </button>
-                <button mat-mini-fab class="add-fund-button" (click)="removeSource()">
-                  <mat-icon>delete</mat-icon>
-                </button>
-                <div *ngFor="let source of plannerForm.get('sources')?.value; let i = index" [formGroupName]="i" class="source-row">
-                  <mat-form-field appearance="outline" class="input-field-select-trigger">
-                    <mat-label>Source</mat-label>
+                <div *ngFor="let source of sourcesArray.controls; let i = index" [formGroupName]="i" class="source-row">
+                  <mat-form-field appearance="outline" class="input-field-select">
                     <mat-select formControlName="value">
                       <mat-option *ngFor="let sourceType of sourceTypes" [value]="sourceType.value">
                         {{ sourceType.name }}
@@ -135,7 +134,7 @@
                   </mat-form-field>
                 </div>
               </div>
-            </div> -->
+            </div>
 
             <!-- <div class="planner-field">
               <div class="planner-field-label">

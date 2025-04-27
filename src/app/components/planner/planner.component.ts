@@ -47,9 +47,20 @@ export class PlannerComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   isLoading = false;
 
-  // Add getter for funds FormArray
   get fundsArray() {
     return this.plannerForm.get('funds') as FormArray;
+  }
+
+  get sourcesArray() {
+    return this.plannerForm.get('sources') as FormArray;
+  }
+
+  get runsArray() {
+    return this.plannerForm.get('runs') as FormArray;
+  }
+
+  get reportsArray() {
+    return this.plannerForm.get('reports') as FormArray;
   }
 
   planners: IPlanner[] = [];
@@ -156,8 +167,6 @@ export class PlannerComponent implements OnInit {
         }));
       });
     }
-
-    console.log('fundsArray',fundsArray.value);
 
     if (planner.sources && Array.isArray(planner.sources)) {
       planner.sources.forEach(source => {
