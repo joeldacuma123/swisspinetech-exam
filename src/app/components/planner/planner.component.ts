@@ -109,7 +109,12 @@ export class PlannerComponent implements OnInit {
   }
 
   onSearch(searchTerm: string) {
-    this.filteredPlanners = this.planners.filter(planner =>
+    if (!searchTerm) {
+      this.filteredPlanners = [...this.planners];
+      return;
+    }
+    
+    this.filteredPlanners = this.planners.filter(planner => 
       planner.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }
