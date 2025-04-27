@@ -16,19 +16,19 @@ export const AUTHENTICATION_METHODS = [
 export const PLANNER_TYPES = [
   {
     name: 'Type 1',
-    value: 'type1',
+    value: 'type-1',
   },
   {
     name: 'Type 2',
-    value: 'type2',
+    value: 'type-2',
   },
   {
     name: 'Type 3',
-    value: 'type3',
+    value: 'type-3',
   }, 
   {
     name: 'Type 4',
-    value: 'type4',
+    value: 'type-4',
   },
 ]
 

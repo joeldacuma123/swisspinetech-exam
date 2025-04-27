@@ -47,6 +47,11 @@ export class PlannerComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   isLoading = false;
 
+  // Add getter for funds FormArray
+  get fundsArray() {
+    return this.plannerForm.get('funds') as FormArray;
+  }
+
   planners: IPlanner[] = [];
   plannerTypes = PLANNER_TYPES;
   fundTypes = FUND_TYPES;
@@ -143,33 +148,43 @@ export class PlannerComponent implements OnInit {
     reportsArray.clear();
 
     // Add new items
-    planner.funds.forEach(fund => {
-      fundsArray.push(this.formBuilder.group({
-        fund: [fund.fund],
-        alias: [fund.alias]
-      }));
-    });
+    if (planner.funds && Array.isArray(planner.funds)) {
+      planner.funds.forEach(fund => {
+        fundsArray.push(this.formBuilder.group({
+          fund: [fund.fund || ''],
+          alias: [fund.alias || '']
+        }));
+      });
+    }
 
-    planner.sources.forEach(source => {
-      sourcesArray.push(this.formBuilder.group({
-        name: [source.name],
-        value: [source.value]
-      }));
-    });
+    console.log('fundsArray',fundsArray.value);
 
-    planner.runs.forEach(run => {
-      runsArray.push(this.formBuilder.group({
-        name: [run.name],
-        value: [run.value]
-      }));
-    });
+    if (planner.sources && Array.isArray(planner.sources)) {
+      planner.sources.forEach(source => {
+        sourcesArray.push(this.formBuilder.group({
+          name: [source.name || ''],
+          value: [source.value || '']
+        }));
+      });
+    }
 
-    planner.reports.forEach(report => {
-      reportsArray.push(this.formBuilder.group({
-        name: [report.name],
-        value: [report.value]
-      }));
-    });
+    if (planner.runs && Array.isArray(planner.runs)) {
+      planner.runs.forEach(run => {
+        runsArray.push(this.formBuilder.group({
+          name: [run.name || ''],
+          value: [run.value || '']
+        }));
+      });
+    }
+
+    if (planner.reports && Array.isArray(planner.reports)) {
+      planner.reports.forEach(report => {
+        reportsArray.push(this.formBuilder.group({
+          name: [report.name || ''],
+          value: [report.value || '']
+        }));
+      });
+    }
   }
 
   selectPlanner(planner: IPlanner) {
@@ -181,13 +196,15 @@ export class PlannerComponent implements OnInit {
     try {
       this.selectedPlanner = planner;
       this.plannerForm = createPlannerForm(this.formBuilder);
+      const selectedPlannerType = this.plannerTypes.find(type => type.value === planner.plannerType);    
+      const selectedSystem = this.systems.find(system => system.id === planner.externalSystemConfig?.id);
       
       // Patch basic form values
       this.plannerForm.patchValue({
         name: planner.name,
         description: planner.description,
-        plannerType: planner.plannerType,
-        externalSystemConfig: planner.externalSystemConfig,
+        plannerType: selectedPlannerType?.value || '',
+        externalSystemConfig: selectedSystem || null,
         trigger: {
           sources: planner.trigger.sources,
           runs: planner.trigger.runs,
@@ -203,11 +220,22 @@ export class PlannerComponent implements OnInit {
   }
 
   addFund() {
-    const funds = this.plannerForm.get('funds') as FormArray;
-    funds.push(this.formBuilder.group({
-      fund: [''],
-      alias: ['']
-    }));
+    try {
+      const funds = this.plannerForm.get('funds') as FormArray;
+      if (!funds) {
+        console.error('Funds form array not found');
+        return;
+      }
+      
+      funds.push(this.formBuilder.group({
+        fund: ['', Validators.required],
+        alias: ['', Validators.required]
+      }));
+      
+      this.cdr.detectChanges();
+    } catch (error) {
+      console.error('Error adding fund:', error);
+    }
   }
 
   addSource() {
