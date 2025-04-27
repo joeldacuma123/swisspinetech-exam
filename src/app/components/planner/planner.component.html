@@ -78,10 +78,10 @@
               <div class="planner-field-label">
                 <mat-label>Funds:</mat-label>
               </div>
+              <button mat-mini-fab class="add-fund-button" (click)="addFund()">
+                <mat-icon>add</mat-icon>
+              </button>
               <div class="planner-field-container" formArrayName="funds">
-                <button mat-mini-fab class="add-fund-button" (click)="addFund()">
-                  <mat-icon>add</mat-icon>
-                </button>
                 <div *ngFor="let fund of fundsArray.controls; let i = index" [formGroupName]="i" class="fund-row">
                   <mat-form-field appearance="outline" class="input-field-select">
                     <mat-select formControlName="fund">
