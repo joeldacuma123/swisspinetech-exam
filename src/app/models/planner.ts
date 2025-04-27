@@ -1,5 +1,5 @@
 import { ISystem } from './system';
-import { Validators } from '@angular/forms';
+import { Validators, FormBuilder } from '@angular/forms';
 
 export interface IPlanner {
   id?: number;
@@ -46,14 +46,20 @@ export interface IPlannerResponse {
   }
 }
 
-export const PlannerForm = {
-  name: ['', Validators.required],
-  description: ['', Validators.required],
-  plannerType: ['', Validators.required],
-  externalSystemConfig: [null],
-  funds: [[]],
-  trigger: [{}],
-  sources: [[]],
-  runs: [[]],
-  reports: [[]],
-}
+export const createPlannerForm = (formBuilder: FormBuilder) => {
+  return formBuilder.group({
+    name: ['', Validators.required],
+    description: ['', Validators.required],
+    plannerType: ['', Validators.required],
+    externalSystemConfig: [null],
+    funds: formBuilder.array([]),
+    trigger: formBuilder.group({
+      sources: [false],
+      runs: [false],
+      reports: [false]
+    }),
+    sources: formBuilder.array([]),
+    runs: formBuilder.array([]),
+    reports: formBuilder.array([])
+  });
+};

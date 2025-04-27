@@ -26,8 +26,4 @@ export class SystemService {
   async deleteSystem(documentId: string) {
     return firstValueFrom(this.http.delete<any>(`http://localhost:1337/api/systems/${documentId}`));
   }
-
-  async getPlanners() {
-    return firstValueFrom(this.http.get<IPlannerResponse>('http://localhost:1337/api/planners'));
-  }
 }

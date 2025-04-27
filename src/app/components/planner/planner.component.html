@@ -6,10 +6,13 @@
 
   <div class="planner-content">
     <mat-accordion>
-      <mat-expansion-panel *ngFor="let planner of filteredPlanners">
+      <mat-expansion-panel *ngFor="let planner of filteredPlanners" 
+                          [expanded]="!planner.id"
+                          (opened)="onAccordionOpened(planner)"
+                          (closed)="onAccordionClosed(planner)">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            {{ planner.name }}
+            {{ planner.name || 'New Planner' }}
           </mat-panel-title>
           <div class="planner-actions">
             <mat-icon (click)="copyPlanner(planner)" class="action-icon">content_copy</mat-icon>
@@ -18,135 +21,176 @@
         </mat-expansion-panel-header>
   
         <div class="planner-content">
-          <div class="planner-field">
-            <div class="planner-field-label">
-              <mat-label>Name:</mat-label>
+          <form [formGroup]="plannerForm" (ngSubmit)="planner.id ? updatePlanner(planner) : saveNewPlanner()">
+            <div class="planner-field">
+              <div class="planner-field-label">
+                <mat-label>Name:</mat-label>
+              </div>
+              <mat-form-field appearance="outline" class="input-field">
+                <input matInput type="text" formControlName="name" placeholder="Enter planner name" />
+                <mat-error *ngIf="plannerForm.get('name')?.hasError('required')">
+                  Name is required
+                </mat-error>
+              </mat-form-field>
             </div>
-            <mat-form-field appearance="outline" class="input-field">
-              <input matInput type="text" />
-            </mat-form-field>
-          </div>
-          <div class="planner-field">
-           <div class="planner-field-label">
-            <mat-label>Description:</mat-label>
-           </div>
-           <mat-form-field appearance="outline" class="input-field">
-             <input matInput type="text" />
-            </mat-form-field>  
-          </div>
+            <div class="planner-field">
+              <div class="planner-field-label">
+                <mat-label>Description:</mat-label>
+              </div>
+              <mat-form-field appearance="outline" class="input-field">
+                <input matInput type="text" formControlName="description" placeholder="Enter description" />
+                <mat-error *ngIf="plannerForm.get('description')?.hasError('required')">
+                  Description is required
+                </mat-error>
+              </mat-form-field>
+            </div>
 
-          <div class="planner-field">
-            <div class="planner-field-label-select">
-              <mat-label>Planner Type:</mat-label>
+            <div class="planner-field">
+              <div class="planner-field-label-select">
+                <mat-label>Planner Type:</mat-label>
+              </div>
+              <mat-form-field appearance="outline" class="input-field-select">
+                <mat-select formControlName="plannerType">
+                  <mat-option *ngFor="let type of plannerTypes" [value]="type.value">
+                    {{ type.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="plannerForm.get('plannerType')?.hasError('required')">
+                  Planner type is required
+                </mat-error>
+              </mat-form-field>
             </div>
-            <mat-form-field appearance="outline" class="input-field-select">
-              <mat-select>
-                <mat-option *ngFor="let type of plannerTypes" [value]="type.value">
-                  {{ type.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
 
-          <div class="planner-field">
-            <div class="planner-field-label-select">
-              <mat-label>External System Config:</mat-label>
-            </div>
-            <mat-form-field appearance="outline" class="input-field-select">
-              <mat-select>
-                <mat-option *ngFor="let system of systems" [value]="system">{{ system.name }}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="planner-field">
-            <div class="planner-field-label">
-              <mat-label>Funds:</mat-label>
-            </div>
-            <div class="planner-field-container">
-              <button mat-mini-fab class="add-fund-button">
-                <mat-icon>add</mat-icon>
-              </button>
+            <div class="planner-field">
+              <div class="planner-field-label-select">
+                <mat-label>External System Config:</mat-label>
+              </div>
               <mat-form-field appearance="outline" class="input-field-select">
-                <mat-select>
-                  <mat-option *ngFor="let fund of fundTypes" [value]="fund.value">{{ fund.name }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field appearance="outline" class="input-field-select">
-                <mat-select>
-                  <mat-option *ngFor="let fundAlias of fundAliasTypes" [value]="fundAlias.value">{{ fundAlias.name }}</mat-option>
+                <mat-select formControlName="externalSystemConfig">
+                  <mat-option *ngFor="let system of systems" [value]="system">
+                    {{ system.name }}
+                  </mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
-          </div>
-          <div class="planner-field">
-            <div class="planner-field-label">
-              <mat-label>Trigger:</mat-label>
+
+            <!-- <div class="planner-field">
+              <div class="planner-field-label">
+                <mat-label>Funds:</mat-label>
+              </div>
+              <div class="planner-field-container" formArrayName="funds">
+                <button mat-mini-fab class="add-fund-button" (click)="addFund()">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <div *ngFor="let fund of plannerForm.get('funds')?.value; let i = index" [formGroupName]="i" class="fund-row">
+                  <mat-form-field appearance="outline" class="input-field-select">
+                    <mat-select formControlName="fund">
+                      <mat-option *ngFor="let fundType of fundTypes" [value]="fundType.value">
+                        {{ fundType.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="input-field-select">
+                    <mat-select formControlName="alias">
+                      <mat-option *ngFor="let fundAlias of fundAliasTypes" [value]="fundAlias.value">
+                        {{ fundAlias.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div> -->
+
+            <div class="planner-field">
+              <div class="planner-field-label">
+                <mat-label>Trigger:</mat-label>
+              </div>
+              <div class="input-field-checkbox" formGroupName="trigger">
+                <mat-checkbox formControlName="sources">Sources</mat-checkbox>
+                <mat-checkbox formControlName="runs">Runs</mat-checkbox>
+                <mat-checkbox formControlName="reports">Reports</mat-checkbox>
+              </div>
             </div>
-            <div class="input-field-checkbox">
-              <mat-checkbox>Sources</mat-checkbox>
-              <mat-checkbox>Runs</mat-checkbox>
-              <mat-checkbox>Reports</mat-checkbox>
+
+            <!-- <div class="planner-field">
+              <div class="planner-field-label">
+                <mat-label>Sources:</mat-label>
+              </div>
+              <div class="planner-field-container" formArrayName="sources">
+                <button mat-mini-fab class="add-fund-button" (click)="addSource()">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <button mat-mini-fab class="add-fund-button" (click)="removeSource()">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                <div *ngFor="let source of plannerForm.get('sources')?.value; let i = index" [formGroupName]="i" class="source-row">
+                  <mat-form-field appearance="outline" class="input-field-select-trigger">
+                    <mat-label>Source</mat-label>
+                    <mat-select formControlName="value">
+                      <mat-option *ngFor="let sourceType of sourceTypes" [value]="sourceType.value">
+                        {{ sourceType.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div> -->
+
+            <!-- <div class="planner-field">
+              <div class="planner-field-label">
+                <mat-label>Runs:</mat-label>
+              </div>
+              <div class="planner-field-container" formArrayName="runs">
+                <button mat-mini-fab class="add-fund-button" (click)="addRun()">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <button mat-mini-fab class="add-fund-button" (click)="removeRun()">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                <div *ngFor="let run of plannerForm.get('runs')?.value; let i = index" [formGroupName]="i" class="run-row">
+                  <mat-form-field appearance="outline" class="input-field-select-trigger">
+                    <mat-label>Run</mat-label>
+                    <mat-select formControlName="value">
+                      <mat-option *ngFor="let runType of runTypes" [value]="runType.value">
+                        {{ runType.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="planner-field">
-            <div class="planner-field-label">
-              <mat-label>Sources:</mat-label>
+
+            <div class="planner-field">
+              <div class="planner-field-label">
+                <mat-label>Reports:</mat-label>
+              </div>
+              <div class="planner-field-container" formArrayName="reports">
+                <button mat-mini-fab class="add-fund-button" (click)="addReport()">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <button mat-mini-fab class="add-fund-button" (click)="removeReport()">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                <div *ngFor="let report of plannerForm.get('reports')?.value; let i = index" [formGroupName]="i" class="report-row">
+                  <mat-form-field appearance="outline" class="input-field-select-trigger">
+                    <mat-label>Report</mat-label>
+                    <mat-select formControlName="value">
+                      <mat-option *ngFor="let reportType of reportTypes" [value]="reportType.value">
+                        {{ reportType.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
             </div>
-            <div class="planner-field-container">
-              <button mat-mini-fab class="add-fund-button">
-                <mat-icon>add</mat-icon>
+
+            <div class="planner-actions">
+              <button mat-button type="submit" [disabled]="!plannerForm.valid">
+                {{ planner.id ? 'Save Changes' : 'Create Planner' }}
               </button>
-              <button mat-mini-fab class="add-fund-button">
-                <mat-icon>delete</mat-icon>
-              </button>
-              <mat-form-field appearance="outline" class="input-field-select-trigger">
-                <mat-label>Source</mat-label>
-                <mat-select>
-                  <mat-option *ngFor="let source of sourceTypes" [value]="source.value">{{ source.name }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="planner-field">
-            <div class="planner-field-label">
-              <mat-label>Runs:</mat-label>
-            </div>
-            <div class="planner-field-container">
-              <button mat-mini-fab class="add-fund-button">
-                <mat-icon>add</mat-icon>
-              </button>
-              <button mat-mini-fab class="add-fund-button">
-                <mat-icon>delete</mat-icon>
-              </button>
-              <mat-form-field appearance="outline" class="input-field-select-trigger">
-                <mat-label>Run</mat-label>
-                <mat-select>
-                  <mat-option *ngFor="let run of runTypes" [value]="run.value">{{ run.name }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="planner-field">
-            <div class="planner-field-label">
-              <mat-label>Reports:</mat-label>
-            </div>
-            <div class="planner-field-container">
-              <button mat-mini-fab class="add-fund-button">
-                <mat-icon>add</mat-icon>
-              </button>
-              <button mat-mini-fab class="add-fund-button">
-                <mat-icon>delete</mat-icon>
-              </button>
-              <mat-form-field appearance="outline" class="input-field-select-trigger">
-                <mat-label>Report</mat-label>
-                <mat-select>
-                  <mat-option *ngFor="let report of reportTypes" [value]="report.value">{{ report.name }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
+            </div> -->
+          </form>
         </div>
-        
       </mat-expansion-panel>
     </mat-accordion>
   </div>
