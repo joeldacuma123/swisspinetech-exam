@@ -115,8 +115,25 @@ export class PlannerComponent implements OnInit {
   }
 
   createNewPlanner() {
-    this.selectedPlanner = null;
+    const newPlanner: IPlanner = {
+      name: '',
+      description: '',
+      plannerType: '',
+      externalSystemConfig: null,
+      funds: [],
+      trigger: {
+        sources: false,
+        runs: false,
+        reports: false
+      },
+      sources: [],
+      runs: [],
+      reports: []
+    };
+    
+    this.selectedPlanner = newPlanner;
     this.plannerForm = createPlannerForm(this.formBuilder);
+    this.filteredPlanners = [...this.filteredPlanners, newPlanner];
   }
 
   onAccordionOpened(planner: IPlanner) {
