@@ -23,4 +23,8 @@ export class PlannerService {
   async updatePlanner(planner: IPlanner, documentId: string) {
     return firstValueFrom(this.http.put<IPlannerResponse>(`http://localhost:1337/api/planners/${documentId}`, { data: planner }));
   }
+
+  async deletePlanner(documentId: string) {
+    return firstValueFrom(this.http.delete<IPlannerResponse>(`http://localhost:1337/api/planners/${documentId}`));
+  }
 }

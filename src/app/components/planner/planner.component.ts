@@ -373,7 +373,19 @@ export class PlannerComponent implements OnInit {
   }
 
   deletePlanner(planner: IPlanner) {
-    console.log('Delete planner clicked', planner);
+    if (planner.documentId) {
+      try {
+        this.plannerService.deletePlanner(planner.documentId.toString()).then(() => {
+          this.loadPlanners();
+          if (this.selectedPlanner?.documentId === planner.documentId) {
+            this.selectedPlanner = null;
+            this.plannerForm = createPlannerForm(this.formBuilder);
+          }
+        });
+      } catch (error) {
+        console.error('Error deleting planner:', error);
+      }
+    }
   }
 
   async submitPlanner(planner: IPlanner) {
