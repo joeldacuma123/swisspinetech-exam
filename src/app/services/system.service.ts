@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { ISystem, ISystemsResponse } from '../models/system';
-import { IPlannerResponse } from '../models/planner';
 
 @Injectable({
   providedIn: 'root'
