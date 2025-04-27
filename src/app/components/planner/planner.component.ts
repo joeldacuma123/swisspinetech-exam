@@ -323,7 +323,7 @@ export class PlannerComponent implements OnInit {
   async saveNewPlanner() {
     if (this.plannerForm.valid) {
       try {
-        // await this.plannerService.createPlanner(this.plannerForm.value);
+        await this.plannerService.createPlanner(this.plannerForm.value);
         await this.loadPlanners();
         this.plannerForm = createPlannerForm(this.formBuilder);
       } catch (error) {
