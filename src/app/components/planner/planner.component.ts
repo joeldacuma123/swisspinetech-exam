@@ -248,11 +248,22 @@ export class PlannerComponent implements OnInit {
   }
 
   addSource() {
-    const sources = this.plannerForm.get('sources') as FormArray;
-    sources.push(this.formBuilder.group({
-      name: [''],
-      value: ['']
-    }));
+    try {
+      const sources = this.plannerForm.get('sources') as FormArray;
+      if (!sources) {
+        console.error('Sources form array not found');
+        return;
+      }
+      
+      sources.push(this.formBuilder.group({
+        name: [''],
+        value: ['']
+      }));
+      
+      this.cdr.detectChanges();
+    } catch (error) {
+      console.error('Error adding source:', error);
+    }
   }
 
   removeSource() {
