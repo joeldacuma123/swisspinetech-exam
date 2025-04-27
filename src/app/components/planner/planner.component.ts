@@ -17,6 +17,7 @@ import { SystemService } from '../../services/system.service';
 import { PlannerService } from '../../services/planner.service';
 import { ISystem } from '../../models/system';
 import { createPlannerForm, IPlanner } from '../../models/planner';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-planner',
@@ -35,6 +36,7 @@ import { createPlannerForm, IPlanner } from '../../models/planner';
     MatCheckboxModule,
     HttpClientModule,
     PlannerHeaderComponent,
+    MatPaginatorModule,
   ],
   templateUrl: './planner.component.html',
   styleUrls: ['./planner.component.scss']
@@ -76,6 +78,10 @@ export class PlannerComponent implements OnInit {
   private isSelecting = false;
   private selectionTimeout: any;
   private expandedPanels: Set<number> = new Set();
+  pageSize = 5;
+  pageIndex = 0;
+  pageSizeOptions = [5, 10, 25];
+  totalPlanners = 0;
 
   constructor(private dialog: MatDialog) {}
 
@@ -87,8 +93,9 @@ export class PlannerComponent implements OnInit {
   async loadPlanners() {
     try {
       this.isLoading = true;
-      const response = await this.plannerService.getPlanners();
+      const response = await this.plannerService.getPlanners(this.pageIndex + 1, this.pageSize);
       this.planners = response.data;
+      this.totalPlanners = response.meta.pagination.total;
       this.filteredPlanners = [...this.planners];
       this.cdr.detectChanges();
     } catch (error) {
@@ -108,9 +115,19 @@ export class PlannerComponent implements OnInit {
     }
   }
 
+  onPageChange(event: PageEvent) {
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this.loadPlanners();
+  }
+
+  private updatePaginatedPlanners() {
+    this.filteredPlanners = [...this.planners];
+  }
+
   onSearch(searchTerm: string) {
     if (!searchTerm) {
-      this.filteredPlanners = [...this.planners];
+      this.loadPlanners();
       return;
     }
     

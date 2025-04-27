@@ -10,8 +10,10 @@ export class PlannerService {
 
   constructor(private http: HttpClient) { }
 
-  async getPlanners() {
-    return firstValueFrom(this.http.get<IPlannerResponse>('http://localhost:1337/api/planners'));
+  async getPlanners(page = 1, pageSize = 10) {
+    return firstValueFrom(this.http.get<IPlannerResponse>(
+      `http://localhost:1337/api/planners?pagination[page]=${page}&pagination[pageSize]=${pageSize}`
+    ));
   }
 
   async createPlanner(planner: IPlanner) {
