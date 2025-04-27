@@ -1,0 +1,59 @@
+import { ISystem } from './system';
+import { Validators } from '@angular/forms';
+
+export interface IPlanner {
+  id?: number;
+  documentId?: number;
+  name: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  description: string;
+  plannerType: string;
+  externalSystemConfig: ISystem | null;
+  funds: {
+    fund: string
+    alias: string
+  }[]
+  trigger: {
+    runs: boolean
+    reports: boolean
+    sources: boolean
+  }
+  sources: {
+    name: string
+    value: string
+  }[]
+  runs: {
+    name: string
+    value: string
+  }[]
+  reports: {
+    name: string
+    value: string
+  }[]
+}
+
+export interface IPlannerResponse {
+  data: IPlanner[]
+  meta: {
+    pagination: {
+      page: number
+      pageSize: number
+      pageCount: number
+      total: number
+    }
+  }
+}
+
+export const PlannerForm = {
+  name: ['', Validators.required],
+  description: ['', Validators.required],
+  plannerType: ['', Validators.required],
+  externalSystemConfig: [null],
+  funds: [[]],
+  trigger: [{}],
+  sources: [[]],
+  runs: [[]],
+  reports: [[]],
+}
