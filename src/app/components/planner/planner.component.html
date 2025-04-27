@@ -15,6 +15,7 @@
             {{ planner.name || 'New Planner' }}
           </mat-panel-title>
           <div class="planner-actions">
+            <mat-icon class="action-icon">play_arrow</mat-icon>
             <mat-icon (click)="copyPlanner(planner)" class="action-icon">content_copy</mat-icon>
             <mat-icon (click)="deletePlanner(planner)" class="action-icon">delete</mat-icon>
           </div>
