@@ -18,6 +18,7 @@ import { PlannerService } from '../../services/planner.service';
 import { ISystem } from '../../models/system';
 import { createPlannerForm, IPlanner } from '../../models/planner';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-planner',
@@ -83,7 +84,10 @@ export class PlannerComponent implements OnInit {
   pageSizeOptions = [5, 10, 25];
   totalPlanners = 0;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
+  ) {}
 
   async ngOnInit() {
     await this.loadPlanners();
@@ -366,10 +370,33 @@ export class PlannerComponent implements OnInit {
   }
 
   copyPlanner(planner: IPlanner) {
-    const plannerData = { ...planner };
-    delete plannerData.id;
-    delete plannerData.documentId;
-    this.selectPlanner(plannerData as IPlanner);
+    const plannerData = {
+      name: planner.name,
+      description: planner.description,
+      plannerType: planner.plannerType,
+      externalSystemConfig: planner.externalSystemConfig,
+      funds: planner.funds,
+      trigger: planner.trigger,
+      sources: planner.sources,
+      runs: planner.runs,
+      reports: planner.reports
+    };
+    
+    const jsonString = JSON.stringify(plannerData, null, 2);
+    navigator.clipboard.writeText(jsonString).then(() => {
+      this.snackBar.open('Planner data copied to clipboard', 'Close', {
+        duration: 3000,
+        horizontalPosition: 'end',
+        verticalPosition: 'top'
+      });
+    }).catch(err => {
+      this.snackBar.open('Failed to copy planner data', 'Close', {
+        duration: 3000,
+        horizontalPosition: 'end',
+        verticalPosition: 'top'
+      });
+      console.error('Failed to copy planner data:', err);
+    });
   }
 
   deletePlanner(planner: IPlanner) {
